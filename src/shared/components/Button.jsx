@@ -8,7 +8,7 @@ import {
 import { COLORS, SPACING, FONT_SIZE } from "../constants/theme";
 
 const Button = ({ 
-    tittle,
+    title,
     onPress,
     loading,
     variant = "primary",
@@ -41,7 +41,7 @@ const Button = ({
                         isSecondary ? styles.textSecondary : styles.textPrimary,
                     ]}
                 >
-                    {tittle}
+                    {title}
                 </Text>
             )}
         </TouchableOpacity>
