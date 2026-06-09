@@ -19,8 +19,7 @@ import kinalSportsLogo from "../../../../assets/kinal_sports.png"
  
 const LoginScreen = ({ navigation }) => {
  
-    const { handleLogin, loading } = useAuth();
-
+    const { handleLogin, loading } = useAuth()
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             emailOrUsername: "",

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import authClient from "../../../shared/api/authClient.js";
-import { useAuthStore } from "../../../shared/store/authStore.js";
+import { useAuthStore } from "../../../store/authStore.js";
  
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);

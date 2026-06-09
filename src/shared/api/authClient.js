@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../../store/authStore.js";
 import { ENDPOINTS } from "../constants/endpoints";
  
 const authClient = axios.create({
