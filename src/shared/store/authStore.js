@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
- 
+
 export const useAuthStore = create(
     persist(
         (set) => ({
@@ -9,9 +9,9 @@ export const useAuthStore = create(
             user: null,
             isAuthenticated: false,
             _hasHydrated: false,
- 
-            setHasHydrated: (state) => set({ _hasHydrated: state }),
- 
+
+            setHasHydrated: (val) => set({ _hasHydrated: val }),
+
             // Guarda accessToken y refreshToken seguro
             login: async (accessToken, user, refreshToken) => {
                 set({
@@ -25,10 +25,10 @@ export const useAuthStore = create(
                     );
                 }
             },
- 
+
             // Solo actualiza el accessToken en memoria
             setAccessToken: (token) => set({ token }),
- 
+
             // Limpia todo y borra refreshToken seguro
             logout: async () => {
                 set({
@@ -44,11 +44,13 @@ export const useAuthStore = create(
         {
             name: "auth-storage",
             storage: createJSONStorage(() => AsyncStorage),
-            onRehydrateStorage: () => (state) => {
-                state?.setHasHydrated(true);
+            onRehydrateStorage: () => (state, error) => {
+                if (error) {
+                    console.log('Error de hidratación', error);
+                } else {
+                    state?.setHasHydrated(true);
+                }
             },
-        },
-    ),
+        }
+    )
 );
- 
- 
