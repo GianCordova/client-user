@@ -19,7 +19,7 @@ import kinalSportsLogo from "../../../../assets/kinal_sports.png"
  
 const RegisterScreen = ({ navigation }) => {
 
-    const { handleRegister,loading } = useAuth()
+    const { handleRegister, loading } = useAuth()
     const { 
         control, 
         handleSubmit, 
@@ -31,23 +31,28 @@ const RegisterScreen = ({ navigation }) => {
             username: "",
             email: "",
             password: "",
-            cellphone: "",
+            phone: "", 
         },
     });
  
     const onSubmit = async (data) => {
+        const formattedData = {
+            ...data,
+            phone: data.phone.replace(/[^0-9]/g, '')
+        };
+
         try {
-            await handleRegister(data)
+            await handleRegister(formattedData) // Enviamos los datos limpios
 
             Alert.alert(
                 "Registro exitoso",
-                "Tu cuenta a sido creada. Ahora puedes iniciar sesion"
+                "Tu cuenta ha sido creada. Ahora puedes iniciar sesión",
                 [{ text: "Ok", onPress: () => navigation.navigate("Login")}]
             )
         } catch (error) {
-            console.error(error)
-            const message = error.response?.data?.message || "Error al registrarse"
-            Alert.alert("Error", message)
+            console.error(error);
+            const message = error.response?.data?.message || "Error al registrarse";
+            Alert.alert("Error", message);
         }
     }
  
@@ -58,123 +63,75 @@ const RegisterScreen = ({ navigation }) => {
         >
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.header}>
-                    <Image
-                        source={kinalSportsLogo}
-                        style={styles.logo}
-                        resizeMode="contain"
-                    />
+                    <Image source={kinalSportsLogo} style={styles.logo} resizeMode="contain" />
                 </View>
  
-                <View>
+                <View style={styles.form}>
+                    {/* NOMBRE */}
                     <Controller
                         control={control}
                         rules={{ required: "Nombre requerido" }}
                         render={({ field: { onChange, value } }) => (
-                            <Input
-                                label="Nombre(s)"
-                                placeholder="Tu nombre"
-                                onChangeText={onChange}
-                                value={value}
-                                autoCapitalize="none"
-                                error={errors.name?.message}
-                            />
+                            <Input label="Nombre(s)" placeholder="Tu nombre" onChangeText={onChange} value={value} error={errors.name?.message} />
                         )}
                         name="name"
                     />
  
+                    {/* APELLIDO */}
                     <Controller
                         control={control}
                         rules={{ required: "Apellido requerido" }}
                         render={({ field: { onChange, value } }) => (
-                            <Input
-                                label="Apellidos"
-                                placeholder="Tus apellidos"
-                                onChangeText={onChange}
-                                value={value}
-                                autoCapitalize="none"
-                                error={errors.surname?.message}
-                            />
+                            <Input label="Apellidos" placeholder="Tus apellidos" onChangeText={onChange} value={value} error={errors.surname?.message} />
                         )}
                         name="surname"
                     />
 
+                    {/* USUARIO */}
                     <Controller
                         control={control}
                         rules={{ required: "Usuario requerido" }}
                         render={({ field: { onChange, value } }) => (
-                            <Input
-                                label="Usuario"
-                                placeholder="nombre_usuario"
-                                onChangeText={onChange}
-                                value={value}
-                                autoCapitalize="none"
-                                error={errors.username?.message}
-                            />
+                            <Input label="Usuario" placeholder="nombre_usuario" onChangeText={onChange} value={value} error={errors.username?.message} />
                         )}
                         name="username"
                     />
 
+                    {/* TELEFONO (CORREGIDO) */}
                     <Controller
                         control={control}
                         rules={{ required: "Telefono requerido" }}
                         render={({ field: { onChange, value } }) => (
-                            <Input
-                                label="Telefono"
-                                placeholder="Ej. +502 1111 1111"
-                                onChangeText={onChange}
-                                value={value}
-                                autoCapitalize="none"
-                                error={errors.cellphone?.message}
-                            />
+                            <Input label="Telefono" placeholder="12345678" onChangeText={onChange} value={value} keyboardType="numeric" error={errors.phone?.message} />
                         )}
-                        name="cellphone"
+                        name="phone"
                     />
 
+                    {/* EMAIL */}
                     <Controller
                         control={control}
                         rules={{ required: "Email requerido" }}
                         render={({ field: { onChange, value } }) => (
-                            <Input
-                                label="Email"
-                                placeholder="correo@ejemplo.com"
-                                onChangeText={onChange}
-                                value={value}
-                                autoCapitalize="none"
-                                error={errors.email?.message}
-                            />
+                            <Input label="Email" placeholder="correo@ejemplo.com" onChangeText={onChange} value={value} error={errors.email?.message} />
                         )}
                         name="email"
                     />
 
+                    {/* CONTRASEÑA */}
                     <Controller
                         control={control}
                         rules={{ required: "Contraseña requerida" }}
                         render={({ field: { onChange, value } }) => (
-                            <Input
-                                label="Contraseña"
-                                placeholder="••••••••"
-                                secureTextEntry
-                                onChangeText={onChange}
-                                value={value}
-                                autoCapitalize="none"
-                                error={errors.password?.message}
-                            />
+                            <Input label="Contraseña" placeholder="••••••••" secureTextEntry onChangeText={onChange} value={value} error={errors.password?.message} />
                         )}
                         name="password"
                     />
  
-                    <Button
-                        title="Registrar"
-                        onPress={handleSubmit(onSubmit)}
-                        style={styles.button}                    
-                    />
+                    <Button title="Registrar" onPress={handleSubmit(onSubmit)} style={styles.button} />
  
                     <View style={styles.footer}>
-                        <Text sytle={styles.footerText}>¿Ya tienes cuenta?</Text>
-                        <Text
-                            style={styles.link}
-                            onPress={() => navigation.navigate("Login")}
-                        >
+                        <Text style={styles.footerText}>¿Ya tienes cuenta? </Text>
+                        <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
                             Iniciar Sesion
                         </Text>
                     </View>
